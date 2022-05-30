@@ -2,7 +2,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.concurrent.ExecutionException;
 
 public class Main {
 
@@ -17,6 +16,7 @@ public class Main {
         Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
         return connection;
     }
+
     private static boolean select() throws SQLException{
         try{
             Statement statement = connection().createStatement();
@@ -34,7 +34,9 @@ public class Main {
         return true;
     }
 
+
     private static boolean insert(String login, String password){return true;}
+
 
     private static boolean delete(String login){
         try {
@@ -48,7 +50,9 @@ public class Main {
         return true;
     }
 
+
     private static boolean update(String login, String password){return true;}
+
 
     private static String getPasswordHash(String password){
         try{
