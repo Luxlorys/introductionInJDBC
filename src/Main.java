@@ -1,4 +1,8 @@
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.concurrent.ExecutionException;
 
 public class Main {
 
@@ -6,7 +10,7 @@ public class Main {
     static String USER = Config.USER;
     static String PASSWORD = Config.PASSWORD;
     public static void main(String[] args) throws SQLException{
-        select();
+        System.out.println(getPasswordHash("password#")); // it's work, yeee
     }
 
     private static Connection connection() throws SQLException{
@@ -25,16 +29,39 @@ public class Main {
 
             }
         } catch (Exception e){
-            e.getMessage();
+            System.out.println("Query not executed");
         }
         return true;
     }
 
     private static boolean insert(String login, String password){return true;}
 
-    private static boolean delete(String login){return true;}
+    private static boolean delete(String login){
+        try {
+            Statement statement = connection().createStatement();
+
+            String query = "DELETE FROM User WHERE login = " + "\"" + login + "\"";
+            statement.executeUpdate(query);
+        } catch (Exception exception){
+            System.out.println("User not deleted");
+        }
+        return true;
+    }
 
     private static boolean update(String login, String password){return true;}
+
+    private static String getPasswordHash(String password){
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA-256"); // not recommended to use
+            byte[] digest = md.digest(password.getBytes());
+            final String hash = new BigInteger(1, digest).toString(16);
+
+            return hash;
+        } catch(NoSuchAlgorithmException e){
+            System.err.println("Error");
+        }
+        return "";
+    }
 }
 
 

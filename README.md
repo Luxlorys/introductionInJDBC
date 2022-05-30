@@ -6,6 +6,6 @@ At first we need to download jdbc driver and mysql connector, then in our IDE co
 
 i u wanna connect to jdbc driver in IDEA u have to go to "Project structure" -> modules and add mysql-connector.jar
 
-In the password column I'm going to store passwords in a secure form - as a hash
+In the password column I'm going to store passwords in a secure form - as a hash (and, yea, i know i need concat password hash with "salt" ^_^)
 
 
