@@ -1,18 +1,21 @@
-import javax.print.attribute.standard.PresentationDirection;
+import config.Config;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
+import config.Config.*;
+
 public class Main {
 
-    static String URL = Config.URL;
-    static String USER = Config.USER;
-    static String PASSWORD = Config.PASSWORD;
+    static String URL = Config.getURL();
+    static String USER = Config.getUSER();
+    static String PASSWORD = Config.getPASSWORD();
     public static void main(String[] args) throws SQLException{
-        insert("andrew3", "password##");
-//        select();
-        delete("test5");
+//        insert("andrew3", "password##");
+////        select();
+//        delete("test5");
         select();
     }
 
