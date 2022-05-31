@@ -1,3 +1,4 @@
+import javax.print.attribute.standard.PresentationDirection;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,7 +10,10 @@ public class Main {
     static String USER = Config.USER;
     static String PASSWORD = Config.PASSWORD;
     public static void main(String[] args) throws SQLException{
-        System.out.println(getPasswordHash("password#")); // it's work, yeee
+        insert("andrew3", "password##");
+//        select();
+        delete("test5");
+        select();
     }
 
     private static Connection connection() throws SQLException{
@@ -35,7 +39,16 @@ public class Main {
     }
 
 
-    private static boolean insert(String login, String password){return true;}
+    private static boolean insert(String login, String password){
+        try{
+            String query = "INSERT INTO User (login, password) VALUES (\"" + login + "\", \"" + getPasswordHash(password) + "\")";
+            Statement statement = connection().createStatement();
+            statement.executeUpdate(query);
+        } catch (Exception exception){
+            System.out.println("Insert error");
+        }
+        return true;
+    }
 
 
     private static boolean delete(String login){
