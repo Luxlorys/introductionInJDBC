@@ -19,15 +19,15 @@ public class Main {
         select();
     }
 
-    private static Connection connection() throws SQLException{
+    private static Statement getStatement() throws SQLException{
         Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        return connection;
+        Statement statement = connection.createStatement();
+        return statement;
     }
 
     private static boolean select() throws SQLException{
         try{
-            Statement statement = connection().createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM User");
+            ResultSet rs = getStatement().executeQuery("SELECT * FROM User");
 
             while (rs.next()){
                 System.out.print("Id: " + rs.getInt("id") + " | ");
@@ -35,8 +35,8 @@ public class Main {
                 System.out.println("Password: " + rs.getString("password") + " | ");
 
             }
-        } catch (Exception e){
-            System.out.println("Query not executed");
+        } catch (SQLException exception){
+            exception.printStackTrace();
         }
         return true;
     }
@@ -45,10 +45,9 @@ public class Main {
     private static boolean insert(String login, String password){
         try{
             String query = "INSERT INTO User (login, password) VALUES (\"" + login + "\", \"" + getPasswordHash(password) + "\")";
-            Statement statement = connection().createStatement();
-            statement.executeUpdate(query);
-        } catch (Exception exception){
-            System.out.println("Insert error");
+            getStatement().executeUpdate(query);
+        } catch (SQLException exception){
+            exception.printStackTrace();
         }
         return true;
     }
@@ -56,12 +55,10 @@ public class Main {
 
     private static boolean delete(String login){
         try {
-            Statement statement = connection().createStatement();
-
             String query = "DELETE FROM User WHERE login = " + "\"" + login + "\"";
-            statement.executeUpdate(query);
-        } catch (Exception exception){
-            System.out.println("User not deleted");
+            getStatement().executeUpdate(query);
+        } catch (SQLException exception){
+            exception.printStackTrace();
         }
         return true;
     }
