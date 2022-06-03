@@ -19,13 +19,9 @@ public class Main {
     }
 
     private static Statement getStatement() throws SQLException {
-        try {
-            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            Statement statement = connection.createStatement();
-            return statement;
-        } catch (SQLException exception) {
-            return null;
-        }
+        Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        Statement statement = connection.createStatement();
+        return statement;
     }
 
     private static boolean select() throws SQLException {
