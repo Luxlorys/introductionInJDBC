@@ -5,11 +5,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
+/**
+ * later I am going to transfer all methods of interaction with db into particular classes
+ */
+
+
 public class Main {
 
-    static String URL = Config.getURL();
-    static String USER = Config.getUSER();
-    static String PASSWORD = Config.getPASSWORD();
+    private static String URL = Config.getURL();
+    private static String USER = Config.getUSER();
+    private static String PASSWORD = Config.getPASSWORD();
 
     public static void main(String[] args) throws SQLException {
         select();
@@ -78,7 +83,6 @@ public class Main {
         }
         return true;
     }
-
 
     private static String getPasswordHash(String password) {
         try {
