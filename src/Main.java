@@ -12,15 +12,17 @@ public class Main {
     static String PASSWORD = Config.getPASSWORD();
 
     public static void main(String[] args) throws SQLException {
-        insert("second_user", "userTwoo");
         select();
     }
 
-    private static Statement getStatement() throws SQLException {
-        Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        Statement statement = connection.createStatement();
-
-        return statement;
+    private static Statement getStatement() {
+        try {
+            Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Statement statement = connection.createStatement();
+            return statement;
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     private static boolean select() throws SQLException {
@@ -65,7 +67,15 @@ public class Main {
     }
 
 
-    private static boolean update(String login, String password) {
+    private static boolean update(String login, String password, int id) {
+        try {
+
+            String query = "UPDATE User SET login = " + "\"" + login + "\", password = " + "\"" + password + "\" WHERE id = " + id;
+            getStatement().executeUpdate(query);
+            System.out.println("Successfully updated");
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
         return true;
     }
 
