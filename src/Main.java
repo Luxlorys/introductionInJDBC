@@ -7,6 +7,7 @@ import java.sql.*;
 
 /**
  * later I am going to transfer all methods of interaction with db into particular classes
+ * all code bellow I'm moving to UserRepository class now
  */
 
 
