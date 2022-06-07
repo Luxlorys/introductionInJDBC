@@ -16,11 +16,13 @@ public class Hashing {
         }
     }
 
+
+    // ok, I will change code later
     public static int getSalt() {
         int max = 9999;
         int min = 1000;
 
-        return (int) Math.floor(Math.random()*(max-min+1)+min);
+        return (int) Math.floor(Math.random()*(max-min+1)+min); // random number from min to max
     }
 
 }

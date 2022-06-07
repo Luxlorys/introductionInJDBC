@@ -50,7 +50,7 @@ public class UserRepository {
 
     public final boolean getUserById(int id) {
         try {
-            ResultSet resultSet = getStatement().executeQuery("SELECT * FROM User WHERE id = " + id);
+            ResultSet resultSet = getStatement().executeQuery("SELECT * FROM Users WHERE id = " + id);
 
             while(resultSet.next()) {
                 System.out.print("id: " + resultSet.getInt("id") + " | ");
@@ -65,7 +65,7 @@ public class UserRepository {
 
     public final boolean getAllUsers() {
         try {
-            ResultSet resultSet = getStatement().executeQuery("SELECT * FROM User");
+            ResultSet resultSet = getStatement().executeQuery("SELECT * FROM Users");
             System.out.println("Database view: ");
             while (resultSet.next()) {
                 System.out.print("Id: " + resultSet.getInt("id") + " | ");
@@ -74,6 +74,18 @@ public class UserRepository {
 //                System.out.print("Salt: " + rs.getString("salt") + " | ");
 
             }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return true;
+    }
+
+
+    public final boolean deleteUser(String login) {
+        try {
+            String query = "DELETE FROM Users WHERE login = " + "\"" + login + "\"";
+            getStatement().executeUpdate(query);
+            System.out.println(login + " - successfully deleted from database");
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
