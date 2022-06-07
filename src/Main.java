@@ -17,7 +17,7 @@ public class Main {
     private static String PASSWORD = Config.getPASSWORD();
 
     public static void main(String[] args) throws SQLException {
-        select();
+
     }
 
     private static Statement getStatement() {
