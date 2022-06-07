@@ -97,4 +97,17 @@ public class UserRepository {
         return true;
     }
 
+
+//    private static boolean update(String login, String password, int id) {
+//        try {
+//
+//            String query = "UPDATE User SET login = " + "\"" + login + "\", password = " + "\"" + password + "\" WHERE id = " + id;
+//            getStatement().executeUpdate(query);
+//            System.out.println("Successfully updated");
+//        } catch (SQLException exception) {
+//            exception.printStackTrace();
+//        }
+//        return true;
+//    }
+
 }
