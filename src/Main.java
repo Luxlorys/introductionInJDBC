@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * later I am going to transfer all methods of interaction with db into particular classes
@@ -18,7 +20,9 @@ public class Main {
     private static String PASSWORD = Config.getPASSWORD();
 
     public static void main(String[] args) throws SQLException {
+        UserRepository getUser = new UserRepository();
 
+        System.out.println(getUser.getUserById(2).getLogin());
     }
 
     private static Statement getStatement() {

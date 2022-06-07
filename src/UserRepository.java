@@ -23,6 +23,8 @@ create unique index Users_salt_uindex
 
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Set;
 
 public class UserRepository {
 
@@ -48,19 +50,22 @@ public class UserRepository {
     }
 
 
-    public final boolean getUserById(int id) {
+    public final User getUserById(int id) {
+        User user = null;
+
         try {
             ResultSet resultSet = getStatement().executeQuery("SELECT * FROM Users WHERE id = " + id);
 
-            while(resultSet.next()) {
-                System.out.print("id: " + resultSet.getInt("id") + " | ");
-                System.out.print("login: " + resultSet.getString("login") + " | ");
-                System.out.print("password: " + resultSet.getString("password") + " | ");
+            while (resultSet.next()) {
+                user = new User(resultSet.getInt("id"),
+                        resultSet.getString("login"),
+                        resultSet.getString("password"),
+                        resultSet.getString("salt"));
             }
+            return user;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
-        return true;
     }
 
     public final boolean getAllUsers() {
@@ -91,4 +96,5 @@ public class UserRepository {
         }
         return true;
     }
+
 }
