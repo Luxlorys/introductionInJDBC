@@ -23,14 +23,12 @@ create unique index Users_salt_uindex
 
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Set;
 
 public class UserRepository {
 
-    private static String URL = "jdbc:mysql://localhost:3306/db";
-    private static String USER = "gromozeqa";
-    private static String PASSWORD = "password#";
+    private final static String URL = "jdbc:mysql://localhost:3306/db";
+    private final static String USER = "gromozeqa";
+    private final static String PASSWORD = "password#";
 
 
     private static Connection getConnection() {
@@ -49,24 +47,6 @@ public class UserRepository {
         }
     }
 
-
-    public final User getUserById(int id) {
-        User user = null;
-
-        try {
-            ResultSet resultSet = getStatement().executeQuery("SELECT * FROM Users WHERE id = " + id);
-
-            while (resultSet.next()) {
-                user = new User(resultSet.getInt("id"),
-                        resultSet.getString("login"),
-                        resultSet.getString("password"),
-                        resultSet.getString("salt"));
-            }
-            return user;
-        } catch (SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
 
     public final boolean getAllUsers() {
         try {
