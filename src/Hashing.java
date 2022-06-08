@@ -4,7 +4,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class Hashing {
 
-    public final String getSecurePassword(String password){
+
+    public final String getSecurePassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256"); // not recommended to use
             byte[] digest = md.digest(password.getBytes());
@@ -22,7 +23,7 @@ public class Hashing {
         int max = 9999;
         int min = 1000;
 
-        return (int) Math.floor(Math.random()*(max-min+1)+min); // random number from min to max
+        return (int) Math.floor(Math.random() * (max - min + 1) + min); // random number from min to max
     }
 
 }
