@@ -6,6 +6,8 @@ public class Main {
         Login login = new Login();
         System.out.println(login.verification("newAndrew", "password")); // true
 
+        UserRepository ur = new UserRepository();
+        ur.insertNewUser("admin", "admin");
     }
 }
 

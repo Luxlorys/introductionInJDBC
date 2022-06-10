@@ -17,8 +17,6 @@ create unique index Users_login_uindex
 
 create unique index Users_salt_uindex
     on Users (salt);
-
-
 * */
 
 
@@ -39,6 +37,8 @@ public class UserRepository {
         }
     }
 
+
+    // maybe later I will be change statement for preparedStatement
     private static Statement getStatement() {
         try {
             return getConnection().createStatement();
@@ -78,10 +78,18 @@ public class UserRepository {
     }
 
 
-    public final boolean insertNewUser(int id, String login, String password) {
-//        Hashing pass = new Hashing();
-
-        return true;
+    public final boolean insertNewUser(String login, String password) {
+        Hashing hash = new Hashing();
+        String query = "INSERT INTO Users (login, password, salt) VALUES (" + "\"" + login + "\", "
+                                                                + "\"" + hash.getSecurePassword(password)[0] + "\", "
+                                                                + "\"" + hash.getSecurePassword(password)[1] + "\")";
+        try {
+            getStatement().executeUpdate(query);
+            System.out.println("User: " + login + " successfully added");
+            return true;
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
 }
