@@ -1,12 +1,10 @@
-import config.Config;
-
 import java.sql.*;
 
 public class Login {
 
-    private final static String URL = Config.getURL();
-    private final static String USER = Config.getUSER();
-    private final static String PASSWORD = Config.getPASSWORD();
+    private final static String URL = "jdbc:mysql://localhost:3306/db";
+    private final static String USER = "gromozeqa";
+    private final static String PASSWORD = "password#";
 
     // needs no comment
     private static User getUserByLogin(String login) {
@@ -37,11 +35,13 @@ public class Login {
     // dataFromUser {login, password} compare with user {login, password, salt}
     public final boolean verification(String login, String password) {
         User user = getUserByLogin(login);
+        Hashing hashing = new Hashing();
 
-        // I will change this later
-        // I have to hash the password and then add the salt
-        password += user.getSalt(); // add salt to user password
+        String hashOfPassword = hashing.getSecurePassword(password)[0];
+        hashOfPassword += user.getSalt(); // add salt to user password
 
-        return login.equals(user.getLogin()) && password.equals(user.getPassword());
+        System.out.println(hashOfPassword);
+
+        return login.equals(user.getLogin()) && hashOfPassword.equals(user.getPassword());
     }
 }

@@ -80,9 +80,10 @@ public class UserRepository {
 
     public final boolean insertNewUser(String login, String password) {
         Hashing hash = new Hashing();
+        String[] currentPassword = hash.getSecurePassword(password);
         String query = "INSERT INTO Users (login, password, salt) VALUES (" + "\"" + login + "\", "
-                                                                + "\"" + hash.getSecurePassword(password)[0] + "\", "
-                                                                + "\"" + hash.getSecurePassword(password)[1] + "\")";
+                                                                + "\"" + currentPassword[0] + currentPassword[1] + "\", "
+                                                                + "\"" + currentPassword[1] + "\")";
         try {
             getStatement().executeUpdate(query);
             System.out.println("User: " + login + " successfully added");

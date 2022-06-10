@@ -14,7 +14,7 @@ public class Hashing {
 
             String salt = getSalt();
 
-            return new String[]{hash + salt, salt};
+            return new String[]{hash, salt};
         } catch (NoSuchAlgorithmException exception) {
             throw new RuntimeException(exception);
         }
