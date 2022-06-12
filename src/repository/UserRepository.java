@@ -1,6 +1,4 @@
-
-
-/*
+package repository;/*
 * table = entity.User (id, login, password, salt)
 * create table Users (
 *
@@ -20,6 +18,8 @@ create unique index Users_salt_uindex
 * */
 
 import services.DAO;
+import services.Hashing;
+
 
 import java.sql.*;
 
@@ -42,7 +42,7 @@ public class UserRepository {
             System.out.println("Database view: ");
             while (resultSet.next()) {
                 System.out.print("Id: " + resultSet.getInt("id") + " | ");
-                System.out.print("Login: " + resultSet.getString("login") + " | ");
+                System.out.print("services.Login: " + resultSet.getString("login") + " | ");
                 System.out.println("Password: " + resultSet.getString("password") + " | ");
 
             }

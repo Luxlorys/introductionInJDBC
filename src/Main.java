@@ -1,4 +1,6 @@
+import repository.UserRepository;
 import services.DAO;
+import services.Login;
 import services.MysqlDAO;
 
 public class Main {
@@ -21,9 +23,10 @@ public class Main {
 
 //        userRepository.insertNewUser("root", "root");
 //        System.out.println(userRepository.deleteUser("user2"));
-        userRepository.insertNewUser("root", "root1");
+//        userRepository.insertNewUser("root12", "root5");
         userRepository.getAllUsers();
-        System.out.println(login.verification("root", "root1"));
+        System.out.println(login.verification("root12", "root5"));
+        System.out.println(userRepository.deleteUser("root"));
 
     }
 }

@@ -1,3 +1,5 @@
+package services;
+
 import entity.User;
 
 import java.sql.*;
