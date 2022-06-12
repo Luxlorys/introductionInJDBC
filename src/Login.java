@@ -40,8 +40,6 @@ public class Login {
         String hashOfPassword = hashing.getSecurePassword(password)[0];
         hashOfPassword += user.getSalt(); // add salt to user password
 
-        System.out.println(hashOfPassword);
-
         return login.equals(user.getLogin()) && hashOfPassword.equals(user.getPassword());
     }
 }

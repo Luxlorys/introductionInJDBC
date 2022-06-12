@@ -55,7 +55,7 @@ public class UserRepository {
             while (resultSet.next()) {
                 System.out.print("Id: " + resultSet.getInt("id") + " | ");
                 System.out.print("Login: " + resultSet.getString("login") + " | ");
-                System.out.print("Password: " + resultSet.getString("password") + " | ");
+                System.out.println("Password: " + resultSet.getString("password") + " | ");
 //                System.out.print("Salt: " + rs.getString("salt") + " | ");
 
             }
@@ -87,6 +87,34 @@ public class UserRepository {
         try {
             getStatement().executeUpdate(query);
             System.out.println("User: " + login + " successfully added");
+            return true;
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    // condition = user login
+    public final boolean changeLogin(String login, String newLogin) {
+        String query = "UPDATE Users SET login = " + "\"" + newLogin + "\" " +
+                "WHERE login = " + "\"" + login + "\"";
+
+        try {
+            getStatement().executeUpdate(query);
+            System.out.println("User: " + login + " successfully updated");
+            return true;
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public final boolean changePassword(String login, String newPassword) {
+        Hashing hash = new Hashing();
+        String[] currentPassword = hash.getSecurePassword(newPassword);
+        String query = "UPDATE Users SET password = " + "\"" + currentPassword[0] + currentPassword[1] + "\", salt = "
+                + "\"" + currentPassword[1] + "\"" + "WHERE login = " + "\"" + login + "\"";
+        try {
+            getStatement().executeUpdate(query);
+            System.out.println("User: " + login + " successfully updated");
             return true;
         } catch (SQLException exception) {
             throw new RuntimeException(exception);

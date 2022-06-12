@@ -3,13 +3,14 @@ public class Main {
 
     public static void main(String[] args) {
         // in database i storing user : {login = newAndrew, password = password}
+
         Login login = new Login();
-//        System.out.println(login.verification("newAndrew", "password")); // true
+        UserRepository userRepository = new UserRepository();
 
-//        UserRepository ur = new UserRepository();
-//        ur.insertNewUser("viktorB", "viktorB");
-        System.out.println(login.verification("viktorB", "viktorB"));
 
+        // you can select all users, delete or insert user, update login or password;
+        // id db store User with login = 'gromozeka' and password = 'gromozeqa'
+        System.out.println(login.verification("gromozeka", "gromozeka")); // output: true
 
 
     }

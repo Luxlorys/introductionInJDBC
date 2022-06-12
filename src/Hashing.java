@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class Hashing {
 
-
     public final String[] getSecurePassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256"); // not recommended to use
