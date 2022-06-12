@@ -1,3 +1,5 @@
+import entity.User;
+
 import java.sql.*;
 
 public class Login {

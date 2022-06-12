@@ -1,7 +1,7 @@
 
 
 /*
-* table = User (id, login, password, salt)
+* table = entity.User (id, login, password, salt)
 * create table Users (
 *
     id       int auto_increment,
@@ -19,22 +19,16 @@ create unique index Users_salt_uindex
     on Users (salt);
 * */
 
+import services.DAO;
 
 import java.sql.*;
 
 public class UserRepository {
 
-    private final static String URL = "jdbc:mysql://localhost:3306/db";
-    private final static String USER = "gromozeqa";
-    private final static String PASSWORD = "password#";
+    DAO dao;
 
-
-    private static Connection getConnection() {
-        try {
-            return DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException exception) {
-            throw new RuntimeException(exception);
-        }
+    public UserRepository(DAO dao) {
+        this.dao = dao;
     }
 
 
@@ -42,7 +36,7 @@ public class UserRepository {
         try {
             String query = "SELECT  * FROM Users";
 
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = dao.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             System.out.println("Database view: ");
@@ -63,12 +57,10 @@ public class UserRepository {
         try {
             String query = "DELETE FROM Users WHERE login = ?";
 
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = dao.getConnection().prepareStatement(query);
             preparedStatement.setString(1, login);
-            preparedStatement.executeUpdate();
 
-            System.out.println(login + " - successfully deleted from database");
-            return true;
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -81,18 +73,16 @@ public class UserRepository {
         String query = "INSERT INTO Users (login, password, salt) VALUES (?, ?, ?)";
 
         try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = dao.getConnection().prepareStatement(query);
 
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, currentPassword[0] + currentPassword[1]);
             preparedStatement.setString(3, currentPassword[1]);
 
-            preparedStatement.executeUpdate();
-            System.out.println("User: " + login + " successfully added");
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
-        return true;
     }
 
     // condition = user login
@@ -100,15 +90,12 @@ public class UserRepository {
         String query = "UPDATE Users SET login = ? WHERE login = ?";
 
         try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = dao.getConnection().prepareStatement(query);
 
             preparedStatement.setString(1, newLogin);
             preparedStatement.setString(2, oldLogin);
 
-            preparedStatement.executeUpdate();
-
-            System.out.println("User: " + oldLogin + " successfully updated");
-            return true;
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -119,16 +106,13 @@ public class UserRepository {
         String[] currentPassword = hash.getSecurePassword(newPassword);
         String query = "UPDATE Users SET password = ?, salt = ? WHERE login = ?";
         try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = dao.getConnection().prepareStatement(query);
 
             preparedStatement.setString(1, currentPassword[0] + currentPassword[1]);
             preparedStatement.setString(2, currentPassword[1]);
             preparedStatement.setString(3, login);
 
-            preparedStatement.executeUpdate();
-
-            System.out.println("User: " + login + " successfully updated");
-            return true;
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
