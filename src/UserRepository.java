@@ -38,19 +38,13 @@ public class UserRepository {
     }
 
 
-    // maybe later I will be change statement for preparedStatement
-    private static Statement getStatement() {
-        try {
-            return getConnection().createStatement();
-        } catch (SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-
     public final boolean getAllUsers() {
         try {
-            ResultSet resultSet = getStatement().executeQuery("SELECT * FROM Users");
+            String query = "SELECT  * FROM Users";
+
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
             System.out.println("Database view: ");
             while (resultSet.next()) {
                 System.out.print("Id: " + resultSet.getInt("id") + " | ");
@@ -68,8 +62,12 @@ public class UserRepository {
 
     public final boolean deleteUser(String login) {
         try {
-            String query = "DELETE FROM Users WHERE login = " + "\"" + login + "\"";
-            getStatement().executeUpdate(query);
+            String query = "DELETE FROM Users WHERE login = ?";
+
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setString(1, login);
+            preparedStatement.executeUpdate();
+
             System.out.println(login + " - successfully deleted from database");
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -81,11 +79,15 @@ public class UserRepository {
     public final boolean insertNewUser(String login, String password) {
         Hashing hash = new Hashing();
         String[] currentPassword = hash.getSecurePassword(password);
-        String query = "INSERT INTO Users (login, password, salt) VALUES (" + "\"" + login + "\", "
-                                                                + "\"" + currentPassword[0] + currentPassword[1] + "\", "
-                                                                + "\"" + currentPassword[1] + "\")";
+        String query = "INSERT INTO Users (login, password, salt) VALUES (?, ?, ?)";
+
         try {
-            getStatement().executeUpdate(query);
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, currentPassword[0] + currentPassword[1]);
+            preparedStatement.setString(3, currentPassword[1]);
+
             System.out.println("User: " + login + " successfully added");
             return true;
         } catch (SQLException exception) {
@@ -94,13 +96,15 @@ public class UserRepository {
     }
 
     // condition = user login
-    public final boolean changeLogin(String login, String newLogin) {
-        String query = "UPDATE Users SET login = " + "\"" + newLogin + "\" " +
-                "WHERE login = " + "\"" + login + "\"";
+    public final boolean changeLogin(String oldLogin, String newLogin) {
+        String query = "UPDATE Users SET login = ?, WHERE login = ?";
 
         try {
-            getStatement().executeUpdate(query);
-            System.out.println("User: " + login + " successfully updated");
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+
+            preparedStatement.setString(1, newLogin);
+            preparedStatement.setString(2, oldLogin);
+            System.out.println("User: " + oldLogin + " successfully updated");
             return true;
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
@@ -110,10 +114,14 @@ public class UserRepository {
     public final boolean changePassword(String login, String newPassword) {
         Hashing hash = new Hashing();
         String[] currentPassword = hash.getSecurePassword(newPassword);
-        String query = "UPDATE Users SET password = " + "\"" + currentPassword[0] + currentPassword[1] + "\", salt = "
-                + "\"" + currentPassword[1] + "\"" + "WHERE login = " + "\"" + login + "\"";
+        String query = "UPDATE Users SET password = ?, salt = ?, WHERE login = ?";
         try {
-            getStatement().executeUpdate(query);
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+
+            preparedStatement.setString(1, currentPassword[0] + currentPassword[1]);
+            preparedStatement.setString(2, currentPassword[1]);
+            preparedStatement.setString(3, login);
+
             System.out.println("User: " + login + " successfully updated");
             return true;
         } catch (SQLException exception) {
