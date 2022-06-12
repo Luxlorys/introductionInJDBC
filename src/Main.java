@@ -12,7 +12,10 @@ public class Main {
 //        System.out.println(login.verification("gromozeka", "gromozeka")); // output: true
 //        userRepository.changePassword("gromozeka", "qwerty");
 
-        userRepository.deleteUser("testLogin");
+//        userRepository.insertNewUser("root", "root");
+
+//        userRepository.insertNewUser("root", "root");
+        userRepository.changeLogin("root", "root3");
         userRepository.getAllUsers();
 
     }

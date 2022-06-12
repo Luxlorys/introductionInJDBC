@@ -50,7 +50,6 @@ public class UserRepository {
                 System.out.print("Id: " + resultSet.getInt("id") + " | ");
                 System.out.print("Login: " + resultSet.getString("login") + " | ");
                 System.out.println("Password: " + resultSet.getString("password") + " | ");
-//                System.out.print("Salt: " + rs.getString("salt") + " | ");
 
             }
         } catch (SQLException exception) {
@@ -69,10 +68,10 @@ public class UserRepository {
             preparedStatement.executeUpdate();
 
             System.out.println(login + " - successfully deleted from database");
+            return true;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
-        return true;
     }
 
 
@@ -88,22 +87,26 @@ public class UserRepository {
             preparedStatement.setString(2, currentPassword[0] + currentPassword[1]);
             preparedStatement.setString(3, currentPassword[1]);
 
+            preparedStatement.executeUpdate();
             System.out.println("User: " + login + " successfully added");
-            return true;
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
+        return true;
     }
 
     // condition = user login
     public final boolean changeLogin(String oldLogin, String newLogin) {
-        String query = "UPDATE Users SET login = ?, WHERE login = ?";
+        String query = "UPDATE Users SET login = ? WHERE login = ?";
 
         try {
             PreparedStatement preparedStatement = getConnection().prepareStatement(query);
 
             preparedStatement.setString(1, newLogin);
             preparedStatement.setString(2, oldLogin);
+
+            preparedStatement.executeUpdate();
+
             System.out.println("User: " + oldLogin + " successfully updated");
             return true;
         } catch (SQLException exception) {
@@ -114,13 +117,15 @@ public class UserRepository {
     public final boolean changePassword(String login, String newPassword) {
         Hashing hash = new Hashing();
         String[] currentPassword = hash.getSecurePassword(newPassword);
-        String query = "UPDATE Users SET password = ?, salt = ?, WHERE login = ?";
+        String query = "UPDATE Users SET password = ?, salt = ? WHERE login = ?";
         try {
             PreparedStatement preparedStatement = getConnection().prepareStatement(query);
 
             preparedStatement.setString(1, currentPassword[0] + currentPassword[1]);
             preparedStatement.setString(2, currentPassword[1]);
             preparedStatement.setString(3, login);
+
+            preparedStatement.executeUpdate();
 
             System.out.println("User: " + login + " successfully updated");
             return true;
